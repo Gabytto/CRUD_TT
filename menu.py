@@ -14,7 +14,7 @@ while activo:
     print('2. Ver prodcutos'),
     print('3. Actualizar producto'),
     print('4. Eliminar producto'),
-    print('5. Salir'),
+    print('0. Salir'),
     print('='*46)
    
 
@@ -30,7 +30,7 @@ while activo:
         print('Haz ingresado un carácter no válido.')
         continue
     
-    if entrada < 1 or entrada > 5:
+    if entrada < 0 or entrada > 5:
         print('Haz ingresado un carácter no válido.')
 
     #1. AGREGAR UN PRODUCTO
@@ -38,9 +38,10 @@ while activo:
         agregando_productos = True
         while agregando_productos:
             producto = []
-            print('='*46)
-            nombre_producto = input('0. Volver al menú principal \n\nó ingrese el nombre del producto a ➕Agregar: ').lower()
+            print('-'*46)
+            nombre_producto = input('0. Volver al menú principal \nIngrese el nombre del producto a agregar: ').lower()
             if nombre_producto == '0':
+                print('='*46)
                 print('volviendo al menú principal...')
                 agregando_productos = False
                 continue
@@ -56,9 +57,9 @@ while activo:
             producto.append(categoria_producto)
             producto.append(precio_producto)
             productos.append(producto)
-            print('='*46)
-            print('\nProducto agregado con éxito!: ')
-            print(producto)
+            print('-'*46)
+            print(f'Producto agregado con éxito!: {producto[0].title()}')
+            
 
             precio_producto = '' #vuelvo a poner precio en str
 
@@ -67,13 +68,13 @@ while activo:
         if productos == []:
             print('No se encontraron productos.')
         else: 
-            print('='*46)
+            print('-'*46)
             print('\nProductos registrados:')
             for i in range(len(productos)):
                 producto = productos[i]
                 print('-'*46)
                 print(f'Producto {i+1}: ')
-                print(f'Nombre del producto: {producto[0]}')
+                print(f'Nombre del producto: {producto[0].title()}')
                 print(f'Categoría: {producto[1]}')
                 print(f'Precio: {producto[2]}')
                 print('-'*46)
@@ -81,6 +82,7 @@ while activo:
     #3. ACTUALIZAR UN PRODUCTO
 
     elif entrada == 3:
+        print('-'*46)
         registro = input('Ingresa el numero del producto a modificar: ')
         if registro.isdigit():
             registro = int(registro)
@@ -100,15 +102,19 @@ while activo:
         producto.append(categoria_producto_nuevo)
         producto.append(precio_producto_nuevo)
         productos.insert(registro-1, producto)
-        print('='*46)
+        print('-'*46)
         print('El producto de ha modificado exitosamente: ')
-        print(producto)
+        print(f'\nNombre del producto: {producto[0].title()}')
+        print(f'Categoría: {producto[1]}')
+        print(f'Precio: {producto[2]}')
+        print('-'*46)
 
 
 
     #4. ELIMINAR UN PRODUCTO
 
     elif entrada == 4:
+        print('-'*46)
         registro = input('Ingresa el numero del producto a eliminar: ')
         if registro.isdigit():
             registro = int(registro)
@@ -116,14 +122,16 @@ while activo:
             print('Haz ingresado un carácter no válido.')
             continue
         producto_eliminado = productos.pop(registro-1)
-        print('El producto: \n', producto_eliminado, '\nha sido eliminado satisfactoriamente.')
+        print('='*46)
+        print('El producto: \n', producto_eliminado[0], '\nha sido eliminado satisfactoriamente.')
 
     #5. SALIR
-    elif entrada == 5:
+    elif entrada == 0:
         print('Saliendo del sistema...')
+        print('='*46)
         activo = False
 
-    # asd
+
 
 
 
