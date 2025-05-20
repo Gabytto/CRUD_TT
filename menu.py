@@ -81,7 +81,18 @@ while activo:
                 print('-'*46)
 
     #3. BUSCAR UN PRODUCTO
-
+    elif entrada == 3:
+        print('-'*46)
+        registro = input('Ingresa el nombre del producto a buscar: ')
+        for i, producto in enumerate(productos):
+            if registro in producto[0]:
+                print('-'*46)
+                print(f'Producto encontrado: ')
+                print(f'Producto {i + 1}: ')
+                print(f'Nombre del producto: {producto[0].title()}')
+                print(f'Categoría: {producto[1]}')
+                print(f'Precio: {producto[2]}')
+                print('-'*46)
      
     #4.ACTUALIZAR UN PRODUCTO
 
