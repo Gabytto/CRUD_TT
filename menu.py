@@ -12,8 +12,9 @@ while activo:
     print('='*20, 'MENU', '='*20),
     print('1. Agregar prodcutos'),
     print('2. Ver prodcutos'),
-    print('3. Actualizar producto'),
-    print('4. Eliminar producto'),
+    print('3. Buscar producto'),
+    print('4. Actualizar producto'),
+    print('5. Eliminar producto'),
     print('0. Salir'),
     print('='*46)
    
@@ -79,9 +80,12 @@ while activo:
                 print(f'Precio: {producto[2]}')
                 print('-'*46)
 
-    #3. ACTUALIZAR UN PRODUCTO
+    #3. BUSCAR UN PRODUCTO
 
-    elif entrada == 3:
+     
+    #4.ACTUALIZAR UN PRODUCTO
+
+    elif entrada == 4:
         print('-'*46)
         registro = input('Ingresa el numero del producto a modificar: ')
         if registro.isdigit():
@@ -107,13 +111,13 @@ while activo:
         print(f'\nNombre del producto: {producto[0].title()}')
         print(f'Categoría: {producto[1]}')
         print(f'Precio: {producto[2]}')
-        print('-'*46)
 
 
 
-    #4. ELIMINAR UN PRODUCTO
 
-    elif entrada == 4:
+    #5. ELIMINAR UN PRODUCTO
+
+    elif entrada == 5:
         print('-'*46)
         registro = input('Ingresa el numero del producto a eliminar: ')
         if registro.isdigit():
@@ -123,16 +127,15 @@ while activo:
             continue
         producto_eliminado = productos.pop(registro-1)
         print('='*46)
-        print('El producto: \n', producto_eliminado[0], '\nha sido eliminado satisfactoriamente.')
+        print('El producto: \n', producto_eliminado[0].title(), '\nha sido eliminado satisfactoriamente.')
 
-    #5. SALIR
+    #0. SALIR
     elif entrada == 0:
         print('Saliendo del sistema...')
         print('='*46)
         activo = False
 
 
-
-
+#probandooooo
 
    
