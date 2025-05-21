@@ -1,7 +1,6 @@
 #VARIABLES
 productos = []    
 entrada = ''
-
 activo = True
 
 #COMIENZO DEL CICLO
@@ -17,7 +16,6 @@ while activo:
     print('5. Eliminar producto'),
     print('0. Salir'),
     print('='*46)
-   
 
     #SOLICITAR INPUT
 
@@ -46,7 +44,7 @@ while activo:
                 print('volviendo al menú principal...')
                 agregando_productos = False
                 continue
-            categoria_producto = input('Ingreses a que categoría pertenece el producto: ')
+            categoria_producto = input('Ingrese la categoría del producto: ')
             precio_producto = ''
             while precio_producto.isdigit() == False:
                 precio_producto = input('Ingrese el precio del producto sin centavos: ')
@@ -60,13 +58,11 @@ while activo:
             productos.append(producto)
             print('-'*46)
             print(f'Producto agregado con éxito!: {producto[0].title()}')
-            
-
             precio_producto = '' #vuelvo a poner precio en str
 
     #2. VER PRODUCTOS
     elif entrada == 2:
-        if productos == []:
+        if not productos:
             print('No se encontraron productos.')
         else: 
             print('-'*46)
@@ -83,7 +79,13 @@ while activo:
     #3. BUSCAR UN PRODUCTO
     elif entrada == 3:
         print('-'*46)
-        registro = input('Ingresa el nombre del producto a buscar: ')
+        if not productos:
+            print('No se encontraron productos.')
+            continue
+        registro = input('Ingresa el nombre del producto a buscar: ').lower()
+
+        producto_encontrado = False
+
         for producto in productos:
             if registro in producto[0]:
                 print('-'*46)
@@ -92,10 +94,11 @@ while activo:
                 print(f'Categoría: {producto[1]}')
                 print(f'Precio: {producto[2]}')
                 print('-'*46)
-            else:
-                print('-'*46)
-                print('Producto no encontrado.')
-                continue
+                producto_encontrado = True
+        if not producto_encontrado:
+            print('-'*46)
+            print('Producto no encontrado.')
+            continue
      
     #4.ACTUALIZAR UN PRODUCTO
 
@@ -109,7 +112,7 @@ while activo:
             continue
         producto = []
         nombre_producto_nuevo = input('Ingrese el nombre del producto: ').lower()
-        categoria_producto_nuevo = input('Ingreses a que categoría pertenece el producto: ')
+        categoria_producto_nuevo = input('Ingrese la categoría del producto: ')
         precio_producto_nuevo = ''
         while precio_producto_nuevo.isdigit() == False:
             precio_producto_nuevo = input('Ingrese el precio del producto sin centavos: ')
@@ -125,9 +128,6 @@ while activo:
         print(f'\nNombre del producto: {producto[0].title()}')
         print(f'Categoría: {producto[1]}')
         print(f'Precio: {producto[2]}')
-
-
-
 
     #5. ELIMINAR UN PRODUCTO
 
@@ -148,8 +148,5 @@ while activo:
         print('Saliendo del sistema...')
         print('='*46)
         activo = False
-
-
-#probandooooo
 
    
