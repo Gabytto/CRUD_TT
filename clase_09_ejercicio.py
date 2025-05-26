@@ -12,7 +12,7 @@ Debe incluirse una opción para salir del programa.
 '''
 # Variables globales
 activo = True
-continuar = True
+continuar_agregando = True
 productos = []
 
 # Definición de funciones
@@ -34,7 +34,18 @@ def agregar_productos():
     print('El producto se ha agregado satisfactoriamente!')
 
 def consultar_productos():
-    pass
+    if not productos:
+        print('No se encontraron produsctos registrados.')
+    else:
+        print('-'*46)
+        for i in range(len(productos)):
+            producto = productos[i]
+            print('-'*46)
+            print(f'Producto{i+1}')
+            print(f'Nombre: {producto[0]}')
+            print(f'Precio: {producto[1]}')
+            print('-'*46)
+
 
 def eliminar_productos():
     pass
@@ -57,14 +68,14 @@ while activo:
 
     match opcion_elegida:
         case 1:
-            while continuar:
+            while continuar_agregando:
                 agregar_productos()
                 pregunta = input('Desea continuar agregando?(si/no)').lower()
                 if pregunta == 'si':
                     continue
                 elif pregunta == 'no':
                     print('Volviendo al menu principal... ')
-                    continuar = False
+                    continuar_agregando = False
         case 2:
             consultar_productos()
         case 3:
