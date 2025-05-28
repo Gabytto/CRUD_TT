@@ -1,6 +1,6 @@
 #Pre-entrega CRUD TalentoTech. 
 
-Es un proyecto para el curso de Programación inicial con Python.
+Proyecto para el curso de Programación inicial con Python.
 Es un CRUD para un comercio, que muestra un menu de opciones que permite:
 -Agregar
 -Ver
