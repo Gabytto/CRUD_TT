@@ -1,6 +1,6 @@
 from colorama import Fore, init, Style
 from modulos.menu import menu_principal, menu_clientes
-from modulos.clientes import agregar_clientes
+from modulos.clientes import agregar_clientes, ver_clientes
 
 # Variables globales
 programa_activo = True
@@ -23,6 +23,8 @@ while programa_activo:
                 match entrada_usuario:
                     case 1:
                         agregar_clientes()
+                    case 2:
+                        ver_clientes()
 
             case 2:
                 pass
