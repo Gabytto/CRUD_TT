@@ -1,6 +1,7 @@
 from colorama import Fore, init, Style
-from modulos.menu import menu_principal, menu_clientes
-from modulos.clientes import agregar_clientes, ver_clientes
+from modulos.menu import menu_principal
+from modulos.productos import agregar_productos, ver_productos, busqueda_por_id, actualizar_por_id
+init(autoreset=True)
 
 # Variables globales
 programa_activo = True
@@ -11,24 +12,22 @@ while programa_activo:
 
     try:
         entrada_usuario = int(input(Fore.YELLOW + 'Ingrese una opción del menú: '))
+        print(Fore.BLUE+'='*46)
     except ValueError:
         print(Fore.BLUE+'='*46)
         print(Fore.RED + 'La opción ingresada no es válida')
     else:    
         match entrada_usuario:
             case 1:
-                menu_clientes()
-                entrada_usuario = int(input(Fore.YELLOW + 'Ingrese una opción del menú: '))
-                print(Fore.BLUE+'='*46)
-                match entrada_usuario:
-                    case 1:
-                        agregar_clientes()
-                    case 2:
-                        ver_clientes()
+                agregar_productos()
 
             case 2:
                 pass
-                #menu_productos()
+                ver_productos()
+            case 3:
+                busqueda_por_id()
+            case 4:
+                actualizar_por_id()
             case 0:
                 print('Saliendo del programa...')
                 programa_activo = False

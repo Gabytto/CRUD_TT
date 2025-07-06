@@ -1,0 +1,4 @@
+Errores que encontre
+
+	-Agregar productos
+		-En "seguir agregando" si ingreso algo distinto a "n" dice opcion no valida pero lo toma como un si (SOLUCIONADO)
