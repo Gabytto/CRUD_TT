@@ -1,6 +1,12 @@
 from colorama import Fore, init, Style
 from modulos.menu import menu_principal
-from modulos.productos import agregar_productos, ver_productos, busqueda_por_id, actualizar_por_id
+from modulos.productos import (agregar_productos, 
+                               ver_productos, 
+                               busqueda_por_id, 
+                               actualizar_por_id, 
+                               eliminar_por_id,
+                               #buscar_por_stock
+                               )
 init(autoreset=True)
 
 # Variables globales
@@ -20,14 +26,17 @@ while programa_activo:
         match entrada_usuario:
             case 1:
                 agregar_productos()
-
             case 2:
-                pass
                 ver_productos()
             case 3:
                 busqueda_por_id()
             case 4:
                 actualizar_por_id()
+            case 5:
+                eliminar_por_id()
+            case 6:
+                #buscar_por_stock()
+                pass
             case 0:
                 print('Saliendo del programa...')
                 programa_activo = False

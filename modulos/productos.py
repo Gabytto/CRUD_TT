@@ -8,12 +8,12 @@ try:
     cursor = conexion.cursor() # Creación del cursor.
     cursor.execute(""" 
                     CREATE TABLE IF NOT EXISTS productos(
-                   id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   nombre TEXT NOT NULL,
-                   descripcion TEXT NOT NULL,
-                   cantidad INTEGER NOT NULL,
-                   precio FLOAT NOT NULL
-                   )""") # Crea la tabla en caso que sea necesario.
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nombre TEXT NOT NULL,
+                    descripcion TEXT NOT NULL,
+                    cantidad INTEGER NOT NULL,
+                    precio FLOAT NOT NULL
+                    )""") # Crea la tabla en caso que sea necesario.
     
 except sqlite3.Error as e:
     print(Fore.RED + f'Error al conectar con la base de datos: {e}')
@@ -206,3 +206,32 @@ def actualizar_por_id():
         conexion.close()
         print('Conexión finalizada.')
 
+def eliminar_por_id():
+    """
+        Siver para eliminar un producto buscandolo por su ID.
+    """
+    try:
+        ver_productos()
+        conexion = sqlite3.connect('inventario.db')
+        cursor = conexion.cursor()
+        id_producto = input(Fore.YELLOW + 'Ingrese el ID del producto que desea eliminar: ').strip()
+        print(Fore.BLUE+'='*46)
+        while not id_producto:
+            print(Fore.RED + "Id inválido")
+            id_producto = input('Ingrese ID del producto que desea eliminar: ').strip()
+
+        query = "DELETE FROM productos WHERE id = ?"
+        cursor.execute(query, (id_producto,))
+
+        if cursor.rowcount == 0: #verifica la cantidad de filas afectadas
+            print(Fore.RED + f"No se encontró el producto con el id: {id_producto}.")
+        else:
+            conexion.commit()
+            print(Fore.GREEN + f"Producto con ID: {id_producto} eliminado con éxito.")
+
+    except sqlite3.Error as e:
+        print(Fore.RED + f"Error al modificar el producto {e}")
+
+    finally:
+        conexion.close()
+        print('Conexión finalizada.')
