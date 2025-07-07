@@ -235,3 +235,59 @@ def eliminar_por_id():
     finally:
         conexion.close()
         print('Conexión finalizada.')
+
+def buscar_por_stock():
+    """
+    Sirve para buscar que productos tienen un stock menor al ingresado por el usuario
+    """
+    try:
+        conexion = sqlite3.connect('inventario.db')
+        cursor = conexion.cursor()
+        stock_min = input(Fore.YELLOW + 'Ingrese una cantidad para filtrar los productos con stock inferior al mismo: ').strip()
+        print(Fore.BLUE+'='*46)
+        while not stock_min:
+            print(Fore.RED + "Id inválido")
+            stock_min = input(Fore.YELLOW + 'Ingrese una cantidad para filtrar los productos con stock inferior al mismo: ').strip()
+
+        query = 'SELECT * FROM productos WHERE cantidad < ?'
+        cursor.execute(query,(stock_min,))
+        productos = cursor.fetchall()
+        if not productos:
+            print(Fore.RED + 'No hay productos almacenados.')
+        else:
+            ancho_id = 10
+            ancho_nombre = 20 
+            ancho_descripcion = 30 
+            ancho_cantidad = 12
+            ancho_precio = 12
+
+            header = (
+                Fore.LIGHTCYAN_EX + 
+                f"| {'ID':^{ancho_id}} "
+                f"| {'NOMBRE':^{ancho_nombre}} "
+                f"| {'DESCRIPCION':^{ancho_descripcion}} "
+                f"| {'CANTIDAD':^{ancho_cantidad}} "
+                f"| {'PRECIO':^{ancho_precio}} |"
+            ) 
+            print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5)) # Ajusta la línea separadora al ancho total
+            print(header)
+            print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5))
+            
+            for producto in productos:
+                precio_formateado = f"{producto[4]:.2f}" # Foramtea el precio a 2 decimales
+                nombre_recortado = (str(producto[1])[:ancho_nombre]).ljust(ancho_nombre) # Recorta el nombre al ancho max proporcionado
+                descripcion_recortada = (str(producto[2])[:ancho_descripcion]).ljust(ancho_descripcion) # Recrota la descripción al max proporcionado
+                print(
+                    f"| {producto[0]:^{ancho_id}} " # ID alineado al centro
+                    f"| {nombre_recortado.title()} " # Nombre alineado a la izquierda
+                    f"| {descripcion_recortada.title()} " # Descripción alineada a la izquierda
+                    f"| {producto[3]:^{ancho_cantidad}} " # Cantidad alineada al centro
+                    f"| {precio_formateado:>{ancho_precio}} |" # Precio alineado a la derecha
+                )
+            print(Fore.LIGHTCYAN_EX + '-' * (len(header) - 5)) # Línea final de la tabla
+
+    except sqlite3.Error as e:
+        print(Fore.RED + f'Error al conectar con la base de datos: {e}')
+    finally:
+            if conexion:
+                conexion.close()

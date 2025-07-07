@@ -5,7 +5,7 @@ from modulos.productos import (agregar_productos,
                                busqueda_por_id, 
                                actualizar_por_id, 
                                eliminar_por_id,
-                               #buscar_por_stock
+                               buscar_por_stock
                                )
 init(autoreset=True)
 
@@ -35,7 +35,7 @@ while programa_activo:
             case 5:
                 eliminar_por_id()
             case 6:
-                #buscar_por_stock()
+                buscar_por_stock()
                 pass
             case 0:
                 print('Saliendo del programa...')
