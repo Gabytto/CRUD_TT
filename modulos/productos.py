@@ -8,7 +8,6 @@ def obtener_conexion():
     """
     try:
         conexion = sqlite3.connect('inventario.db') # Conexión a la base de datos.
-        print(Fore.GREEN + 'Conexión establecida exitosamente.✅') 
         cursor = conexion.cursor() # Creación del cursor.
         cursor.execute(""" 
                         CREATE TABLE IF NOT EXISTS productos(
@@ -36,11 +35,30 @@ def agregar_productos():
         print(Fore.BLUE+'='*46)
         descripcion = input(Fore.YELLOW + 'Ingrese una breve descripción del producto.(max. 30 caracteres): ').strip().lower()
         print(Fore.BLUE+'='*46)
-        cantidad = input(Fore.YELLOW + 'Ingrese el stock total del producto: ').strip()
-        print(Fore.BLUE+'='*46)
-        precio = input(Fore.YELLOW + 'Ingrese el precio del producto: ').strip()
-        print(Fore.BLUE+'='*46)
-
+        
+        while True:        
+            cantidad_str = input(Fore.YELLOW + 'Ingrese el stock total del producto: ').strip()
+            print(Fore.BLUE+'='*46)
+            try:
+                cantidad = int(cantidad_str) # Intento de convertir el string cantidad a int.
+                if cantidad < 0:  # Validación de que la cantidad no sea un numero negativo.
+                    print(Fore.RED + '❌ La cantidad no puede ser un número negativo. Intente de nuevo.')
+                else:
+                    break
+            except ValueError:
+                print(Fore.RED + '❌ Cantidad inválida. Por favor, ingrese un número entero.')
+        
+        while True: # Bucle validación de precio
+            precio_str = input(Fore.YELLOW + 'Ingrese el precio del producto: ').strip()
+            print(Fore.BLUE+'='*46)
+            try:
+                precio = float(precio_str) # Intento convertir el precio de string a float.
+                if precio < 0:
+                    print(Fore.RED + '❌ La cantidad no puede ser un número negativo. Intente de nuevo.')
+                else:
+                    break
+            except ValueError:
+                print(Fore.RED + '❌ Precio inválido. Por favor, ingrese un número (puede usar decimales).')
         conexion = None
         try: 
             conexion = obtener_conexion() # Intenta conectar con la base de datos mediante la función "obtener_conexion".
@@ -280,22 +298,22 @@ def buscar_por_stock():
                     f"| {'CANTIDAD':^{ancho_cantidad}} "
                     f"| {'PRECIO':^{ancho_precio}} |"
                 ) 
-                print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5)) # Ajusta la línea separadora al ancho total
-                print(header)
-                print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5))
+                print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5)) # Linea separadora superior del header de la tabla.
+                print(header)                                    # Imprime el encabezado de la tabla.
+                print(Fore.LIGHTCYAN_EX + '-' * (len(header)-5)) # Linea separadora inferior del header de la tabla.
                 
                 for producto in productos:
-                    precio_formateado = f"{producto[4]:.2f}" # Foramtea el precio a 2 decimales
-                    nombre_recortado = (str(producto[1])[:ancho_nombre]).ljust(ancho_nombre) # Recorta el nombre al ancho max proporcionado
-                    descripcion_recortada = (str(producto[2])[:ancho_descripcion]).ljust(ancho_descripcion) # Recrota la descripción al max proporcionado
+                    precio_formateado = f"{producto[4]:.2f}" # Foramtea el precio a 2 decimales.
+                    nombre_recortado = (str(producto[1])[:ancho_nombre]).ljust(ancho_nombre) # Recorta el nombre al ancho max proporcionado.
+                    descripcion_recortada = (str(producto[2])[:ancho_descripcion]).ljust(ancho_descripcion) # Recrota la descripción al max proporcionado.
                     print(
-                        f"| {producto[0]:^{ancho_id}} " # ID alineado al centro
-                        f"| {nombre_recortado.title()} " # Nombre alineado a la izquierda
-                        f"| {descripcion_recortada.title()} " # Descripción alineada a la izquierda
-                        f"| {producto[3]:^{ancho_cantidad}} " # Cantidad alineada al centro
+                        f"| {producto[0]:^{ancho_id}} "            # ID alineado al centro
+                        f"| {nombre_recortado.title()} "           # Nombre alineado a la izquierda
+                        f"| {descripcion_recortada.title()} "      # Descripción alineada a la izquierda
+                        f"| {producto[3]:^{ancho_cantidad}} "      # Cantidad alineada al centro
                         f"| {precio_formateado:>{ancho_precio}} |" # Precio alineado a la derecha
                     )
-                print(Fore.LIGHTCYAN_EX + '-' * (len(header) - 5)) # Línea final de la tabla
+                print(Fore.LIGHTCYAN_EX + '-' * (len(header) - 5)) # Línea final de la tabla.
 
         else:
             print(Fore.RED + "No se pudo establecer conexión con la base de datos❗.")
