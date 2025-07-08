@@ -36,7 +36,6 @@ while programa_activo:
                 eliminar_por_id()
             case 6:
                 buscar_por_stock()
-                pass
             case 0:
                 print('Saliendo del programa...')
                 programa_activo = False
