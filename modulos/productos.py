@@ -1,11 +1,13 @@
 import sqlite3
 from colorama import Fore, init
 init(autoreset=True)
+from modulos.menu import menu_actualizar_producto
 
 def obtener_conexion():
     """
         Permite conectar con la base de datos y, si es necesario, crear la tabla de productos.
     """
+    conexion = None # Inicializa conexion a None
     try:
         conexion = sqlite3.connect('inventario.db') # Conexión a la base de datos.
         cursor = conexion.cursor() # Creación del cursor.
@@ -22,7 +24,9 @@ def obtener_conexion():
     except sqlite3.Error as e:
         print(Fore.RED + f'Error❗ al conectar con la base de datos: {e}. ❌')
         return None # Retorna None si hay un error
-    
+    finally:
+        if conexion:
+            pass
 
 def agregar_productos():
     '''
@@ -116,6 +120,7 @@ def ver_productos():
                 productos = cursor.fetchall()
                 if not productos:
                     print(Fore.RED + 'No hay productos almacenados. ❌')
+                    return False
                 else:                           # Define el ancho de las columnas.
                     ancho_id = 10
                     ancho_nombre = 20 
@@ -147,10 +152,13 @@ def ver_productos():
                             f'| {precio_formateado:>{ancho_precio}} |'  # Precio alineado a la derecha
                         )
                     print(Fore.LIGHTCYAN_EX + '-' * (len(header) - 5)) # Línea final de la tabla
+                    return True
         else:
             print(Fore.RED + 'No se pudo establecer conexión con la base de datos. ❌')
+            return False
     except sqlite3.Error as e:
         print(Fore.RED + f'Error❗ al conectar con la base de datos: {e}. ❌')
+        return False    
     finally:
             if conexion:
                 conexion.close()
@@ -220,7 +228,11 @@ def actualizar_por_id():
         Permite actualizar un producto buscándolo por su ID.
     """
     try:
-        ver_productos()
+        # Llama a ver_productos y comprueba si hay algo para mostrar.
+        if not ver_productos(): # Si no hay productos, sal de la función.
+            print(Fore.BLUE + '=' * 46)
+            print("Volviendo al menú principal.")
+            return # Termina la ejecución de la función aquí.
         conexion = obtener_conexion()
         if conexion:
             cursor = conexion.cursor()
@@ -235,21 +247,73 @@ def actualizar_por_id():
                     break
                 except ValueError:
                     print(Fore.RED + 'ID inválido. Por favor, ingrese un número entero. ❌')
-            nuevo_nombre = input(Fore.YELLOW + 'Ingrese el nuevo nombre para el producto seleccionado: ').strip().lower()
-            print(Fore.BLUE+'='*46)
-            nueva_descripcion = input(Fore.YELLOW + 'Ingrese la nueva descripción para el producto seleccionado: ').strip().lower()
-            print(Fore.BLUE+'='*46)
-            nueva_cantidad = input(Fore.YELLOW + 'Ingrese la nueva cantidad para el producto seleccionado: ').strip()
-            print(Fore.BLUE+'='*46)
-            nuevo_precio = input(Fore.YELLOW + 'Ingrese el nuevo precio para el producto seleccionado: ').strip()
-            print(Fore.BLUE+'='*46)
-
-            query = """
-                        UPDATE productos
-                        SET nombre = ?, descripcion = ?, cantidad = ?, precio = ?
-                        WHERE id = ?
-                    """
-            cursor.execute(query, (nuevo_nombre, nueva_descripcion, nueva_cantidad, nuevo_precio, id_producto))
+                
+            while True:
+                try:
+                    menu_actualizar_producto()
+                    entrada_usuario = int(input(Fore.YELLOW + 'Qué campo desea actualizar? Ingrese una opción del menú: '))
+                    print(Fore.BLUE+'='*46)
+                except ValueError:
+                    print(Fore.BLUE+'='*46)
+                    print(Fore.RED + 'La opción ingresada no es válida')
+                else:
+                    match entrada_usuario:
+                        case 1:
+                            while True:
+                                nuevo_nombre = input(Fore.YELLOW + 'Ingrese el nuevo nombre para el producto seleccionado: ').strip().lower()
+                                print(Fore.BLUE+'='*46)
+                                if not nuevo_nombre:
+                                    print(Fore.RED + 'El nombre del producto no puede estar vacío. Inténtelo de nuevo. ❌')
+                                    continue
+                                else:
+                                    query = "UPDATE productos SET nombre = ? WHERE id = ?"
+                                    cursor.execute(query, (nuevo_nombre, id_producto))
+                                    break
+                        case 2:
+                            while True:
+                                nueva_descripcion = input(Fore.YELLOW + 'Ingrese la nueva descripción para el producto seleccionado: ').strip().lower()
+                                print(Fore.BLUE+'='*46)
+                                if not nueva_descripcion:
+                                    print(Fore.RED + 'La descripción del producto no puede estar vacía. Inténtelo de nuevo. ❌')
+                                    continue
+                                else:
+                                    query = "UPDATE productos SET descripcion = ? WHERE id = ?"
+                                    cursor.execute(query, (nueva_descripcion, id_producto))
+                                    break
+                        case 3:
+                            while True:
+                                nueva_cantidad = input(Fore.YELLOW + 'Ingrese la nueva cantidad para el producto seleccionado: ').strip()
+                                print(Fore.BLUE+'='*46)
+                                try:
+                                    cantidad = int(nueva_cantidad)
+                                    if cantidad < 0:  # Validación de que la cantidad no sea un número negativo.
+                                        print(Fore.RED + 'La cantidad no puede ser un número negativo. Inténtelo de nuevo. ❌')
+                                    else:
+                                        query = "UPDATE productos SET cantidad = ? WHERE id = ?"
+                                        cursor.execute(query, (nueva_cantidad, id_producto))
+                                        break
+                                except ValueError:
+                                    print(Fore.RED + 'Cantidad inválida. Por favor, ingrese un número entero. ❌')
+                        case 4:
+                            while True:
+                                nuevo_precio = input(Fore.YELLOW + 'Ingrese el nuevo precio para el producto seleccionado: ').strip()
+                                print(Fore.BLUE+'='*46)
+                                try: 
+                                    precio = float(nuevo_precio)
+                                    if precio < 0:
+                                        print(Fore.RED + 'El precio no puede ser un número negativo. Inténtelo de nuevo. ❌')
+                                    else:
+                                        query = "UPDATE productos SET precio = ? WHERE id = ?"
+                                        cursor.execute(query, (nuevo_precio, id_producto))
+                                        break
+                                except ValueError:
+                                    print(Fore.RED + 'Precio inválido❗ Por favor, ingrese un número (puede usar decimales).')
+                        case 0:
+                            print('Volviendo al menú principal...')
+                            break
+                        case _:
+                            print(Fore.BLUE+'='*46)
+                            print(Fore.RED + 'La opción ingresada no es válida')
             if cursor.rowcount == 0: # Verifica la cantidad de filas afectadas.
                 print(Fore.RED + f'No se encontró el producto con el ID: {id_producto}. ❌')
             else:
@@ -267,7 +331,11 @@ def eliminar_por_id():
         Permite eliminar un producto buscandolo por su ID.
     """
     try:
-        ver_productos()
+        # Llama a ver_productos y comprueba si hay algo para mostrar.
+        if not ver_productos(): # Si no hay productos, sal de la función.
+            print(Fore.BLUE + '=' * 46)
+            print("Volviendo al menú principal.")
+            return # Termina la ejecución de la función aquí.
         conexion = obtener_conexion()
         if conexion:
             cursor = conexion.cursor()
@@ -306,12 +374,20 @@ def buscar_por_stock():
         conexion = obtener_conexion()
         if conexion:
             cursor = conexion.cursor()
-            stock_min = input(Fore.YELLOW + 'Ingrese una cantidad para filtrar los productos con stock inferior al mismo: ').strip()
-            print(Fore.BLUE+'='*46)
-            while not stock_min:
-                print(Fore.RED + 'Valor inválido. Por favor, ingrese un número. ❌')
-                stock_min = input(Fore.YELLOW + 'Ingrese una cantidad para filtrar los productos con stock inferior al mismo: ').strip()
-
+            while True:
+                stock_min_str = input(Fore.YELLOW + 'Ingrese una cantidad para filtrar los productos con stock inferior al mismo: ').strip()
+                print(Fore.BLUE+'='*46)
+                try:
+                    stock_min = int(stock_min_str) # Intenta convertir a entero
+                    if stock_min < 0:
+                        print(Fore.RED + 'La cantidad no puede ser un número negativo. Inténtelo de nuevo. ❌')
+                        continue # Vuelve a pedir la entrada
+                    else:
+                        break
+                except ValueError:
+                    print(Fore.RED + 'Cantidad inválida. Por favor, ingrese un número entero. ❌')
+                    continue # Vuelve a pedir la entrada
+                
             query = 'SELECT * FROM productos WHERE cantidad < ?'
             cursor.execute(query,(stock_min,))
             productos = cursor.fetchall()
