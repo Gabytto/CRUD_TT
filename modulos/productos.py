@@ -229,7 +229,7 @@ def actualizar_por_id():
     """
     try:
         # Llama a ver_productos y comprueba si hay algo para mostrar.
-        if not ver_productos(): # Si no hay productos, sal de la función.
+        if not ver_productos(): # Si no hay productos, sale de la función.
             print(Fore.BLUE + '=' * 46)
             print("Volviendo al menú principal.")
             return # Termina la ejecución de la función aquí.
@@ -332,7 +332,7 @@ def eliminar_por_id():
     """
     try:
         # Llama a ver_productos y comprueba si hay algo para mostrar.
-        if not ver_productos(): # Si no hay productos, sal de la función.
+        if not ver_productos(): # Si no hay productos, sale de la función.
             print(Fore.BLUE + '=' * 46)
             print("Volviendo al menú principal.")
             return # Termina la ejecución de la función aquí.
@@ -340,7 +340,7 @@ def eliminar_por_id():
         if conexion:
             cursor = conexion.cursor()
             while True:
-                id_str = input(Fore.YELLOW + 'Ingrese el ID del producto que desea buscar: ').strip()
+                id_str = input(Fore.YELLOW + 'Ingrese el ID del producto que desea eliminar: ').strip()
                 print(Fore.BLUE + '=' * 46) 
                 if not id_str:
                     print(Fore.RED + 'El ID no puede estar vacío. Inténtelo de nuevo. ❌')
