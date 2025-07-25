@@ -1,6 +1,6 @@
 # 📦 Mi Primer Inventario con Python 🚀
 
-Este es un pequeño proyecto que hice con Python para aprender a manejar un inventario. En el podés llevar registro de tus productos, ver qué tenés, cambiarlos o borrarlos. ¡Y todo desde la consola!
+Este es un pequeño proyecto que hice con Python para aprender a manejar un inventario. En el podés llevar registro de tus productos, buscarlos, cambiarlos o eliminarlos.
 
 ---
 
@@ -24,9 +24,9 @@ Toda la info se guarda en un archivo de base de datos (`inventario.db`) usando *
 CRUD_TT
 ├── main.py             # 👉 Desde acá arrancás el programa. Muestra el menú y maneja lo que elegís.
 ├── modulos/
-│   ├── menu.py         # 👉 Acá están las funciones para mostrar los menús bonitos en la consola.
+│   ├── menu.py         # 👉 Acá están las funciones para mostrar los menús en la consola.
 │   └── productos.py    # 👉 Este tiene toda la lógica de la base de datos (guardar, buscar, etc.).
-└── inventario.db       # 👉 Este archivo se crea solo cuando usás la app por primera vez y guarda tus productos.
+└── inventario.db       # 👉 Este archivo se crea automaticamente cuando usás la app por primera vez y almacena tus productos.
 
 ```
 
@@ -35,9 +35,9 @@ CRUD_TT
 ## 🛠️ Lo que vas a necesitar
 
 * **Python 3.8:**
-* **`colorama`:** Una librería de Python para que los mensajes en la consola tengan colores.
+* **colorama** Una librería de Python para que los mensajes en la consola tengan colores.
 
-### instalación  `colorama`!
+### instalación  colorama!
 
 Abrí tu terminal (la consola de comandos) y poné esto:
 
